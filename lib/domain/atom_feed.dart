@@ -1,5 +1,6 @@
 import 'package:webfeed/domain/atom_category.dart';
 import 'package:webfeed/domain/atom_generator.dart';
+import 'package:webfeed/domain/geo/geo.dart';
 import 'package:webfeed/domain/atom_item.dart';
 import 'package:webfeed/domain/atom_link.dart';
 import 'package:webfeed/domain/atom_person.dart';
@@ -22,6 +23,7 @@ class AtomFeed {
   final String logo;
   final String rights;
   final String subtitle;
+  final Geo geo;
 
   AtomFeed({
     this.id,
@@ -37,6 +39,7 @@ class AtomFeed {
     this.logo,
     this.rights,
     this.subtitle,
+    this.geo,
   });
 
   factory AtomFeed.parse(String xmlString) {
@@ -76,6 +79,7 @@ class AtomFeed {
       logo: findFirstElement(feedElement, 'logo')?.text,
       rights: findFirstElement(feedElement, 'rights')?.text,
       subtitle: findFirstElement(feedElement, 'subtitle')?.text,
+      geo: Geo.parse(feedElement),
     );
   }
 }

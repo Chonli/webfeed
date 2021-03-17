@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:webfeed/domain/dublin_core/dublin_core.dart';
+import 'package:webfeed/domain/geo/geo.dart';
 import 'package:webfeed/domain/itunes/itunes.dart';
 import 'package:webfeed/domain/rss_category.dart';
 import 'package:webfeed/domain/rss_cloud.dart';
@@ -34,6 +35,7 @@ class RssFeed {
   final DublinCore dc;
   final Itunes itunes;
   final Syndication syndication;
+  final Geo geo;
 
   RssFeed({
     this.title,
@@ -58,6 +60,7 @@ class RssFeed {
     this.dc,
     this.itunes,
     this.syndication,
+    this.geo,
   });
 
   factory RssFeed.parse(String xmlString) {
@@ -109,6 +112,7 @@ class RssFeed {
       dc: DublinCore.parse(channelElement),
       itunes: Itunes.parse(channelElement),
       syndication: Syndication.parse(channelElement),
+      geo: Geo.parse(channelElement),
     );
   }
 }
