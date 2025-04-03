@@ -1,8 +1,8 @@
 import 'dart:core';
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:dart_rss/domain/rss1_feed.dart';
+import 'package:test/test.dart';
 
 void main() {
   test('parse basic RSS 1.0', () {
@@ -28,21 +28,21 @@ void main() {
 
   test('parse RSS1 with syndication module', () {
     final xmlString =
-    File('test/xml/RSS1-with-syndication-module.xml').readAsStringSync();
+        File('test/xml/RSS1-with-syndication-module.xml').readAsStringSync();
     final feed = Rss1Feed.parse(xmlString);
 
     expect(feed.title, 'Meerkat');
     expect(feed.link, 'http://meerkat.oreillynet.com');
     expect(feed.description, 'Meerkat: An Open Wire Service');
 
-    expect(feed.updatePeriod, UpdatePeriod.Hourly);
+    expect(feed.updatePeriod, UpdatePeriod.hourly);
     expect(feed.updateFrequency, 2);
     expect(feed.updateBase, DateTime.parse('2000-01-01T12:00+00:00'));
   });
 
   test('parse RSS1 with dublin core module', () {
     final xmlString =
-    File('test/xml/RSS1-with-dublin-core-module.xml').readAsStringSync();
+        File('test/xml/RSS1-with-dublin-core-module.xml').readAsStringSync();
     final feed = Rss1Feed.parse(xmlString);
 
     expect(feed.title, 'Meerkat');
@@ -72,7 +72,7 @@ void main() {
 
   test('parse RSS1 with content module', () {
     final xmlString =
-    File('test/xml/RSS1-with-content-module.xml').readAsStringSync();
+        File('test/xml/RSS1-with-content-module.xml').readAsStringSync();
     final feed = Rss1Feed.parse(xmlString);
 
     expect(feed.title, 'Example Feed');

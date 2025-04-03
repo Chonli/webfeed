@@ -9,8 +9,8 @@ class Geo {
 
   factory Geo.parse(XmlElement element) {
     return Geo(
-      double.tryParse(findElementOrNull(element, 'geo:lat')?.text ?? ''),
-      double.tryParse(findElementOrNull(element, 'geo:long')?.text ?? ''),
+      double.tryParse(findElementOrNull(element, 'geo:lat')?.innerText ?? ''),
+      double.tryParse(findElementOrNull(element, 'geo:long')?.innerText ?? ''),
     );
   }
 }

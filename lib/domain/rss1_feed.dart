@@ -6,11 +6,11 @@ import 'package:dart_rss/util/helpers.dart';
 import 'package:xml/xml.dart';
 
 enum UpdatePeriod {
-  Hourly,
-  Daily,
-  Weekly,
-  Monthly,
-  Yearly,
+  hourly,
+  daily,
+  weekly,
+  monthly,
+  yearly,
 }
 
 class Rss1Feed {
@@ -37,20 +37,14 @@ class Rss1Feed {
   });
 
   static UpdatePeriod? _parseUpdatePeriod(String? updatePeriodString) {
-    switch (updatePeriodString) {
-      case 'hourly':
-        return UpdatePeriod.Hourly;
-      case 'daily':
-        return UpdatePeriod.Daily;
-      case 'weekly':
-        return UpdatePeriod.Weekly;
-      case 'monthly':
-        return UpdatePeriod.Monthly;
-      case 'yearly':
-        return UpdatePeriod.Yearly;
-      default:
-        return null;
-    }
+    return switch (updatePeriodString) {
+      'hourly' => UpdatePeriod.hourly,
+      'daily' => UpdatePeriod.daily,
+      'weekly' => UpdatePeriod.weekly,
+      'monthly' => UpdatePeriod.monthly,
+      'yearly' => UpdatePeriod.yearly,
+      _ => null,
+    };
   }
 
   factory Rss1Feed.parse(String xmlString) {
@@ -64,9 +58,9 @@ class Rss1Feed {
 
     final channel = rdfElement.findElements('channel');
     return Rss1Feed(
-      title: findElementOrNull(rdfElement, 'title')?.text,
-      link: findElementOrNull(rdfElement, 'link')?.text,
-      description: findElementOrNull(rdfElement, 'description')?.text,
+      title: findElementOrNull(rdfElement, 'title')?.innerText,
+      link: findElementOrNull(rdfElement, 'link')?.innerText,
+      description: findElementOrNull(rdfElement, 'description')?.innerText,
       items: rdfElement
           .findElements('item')
           .map((element) => Rss1Item.parse(element))
@@ -74,12 +68,14 @@ class Rss1Feed {
       image:
           findElementOrNull(rdfElement, 'image')?.getAttribute('rdf:resource'),
       updatePeriod: _parseUpdatePeriod(
-          findElementOrNull(rdfElement, 'sy:updatePeriod')?.text),
-      updateFrequency:
-          parseInt(findElementOrNull(rdfElement, 'sy:updateFrequency')?.text),
-      updateBase:
-          parseDateTime(findElementOrNull(rdfElement, 'sy:updateBase')?.text),
-      dc: channel.isEmpty ? null : DublinCore.parse(rdfElement.findElements('channel').first),
+          findElementOrNull(rdfElement, 'sy:updatePeriod')?.innerText),
+      updateFrequency: parseInt(
+          findElementOrNull(rdfElement, 'sy:updateFrequency')?.innerText),
+      updateBase: parseDateTime(
+          findElementOrNull(rdfElement, 'sy:updateBase')?.innerText),
+      dc: channel.isEmpty
+          ? null
+          : DublinCore.parse(rdfElement.findElements('channel').first),
     );
   }
 }

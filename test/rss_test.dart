@@ -86,7 +86,7 @@ void main() {
     expect(feed.items.first.enclosure!.type, 'audio/mpeg');
 
     expect(feed.items.first.content!.value,
-        '<img width=\"1000\" height=\"690\" src=\"https://test.com/image_link\"/> Test content<br />');
+        '<img width="1000" height="690" src="https://test.com/image_link"/> Test content<br />');
     expect(
         feed.items.first.content!.images.first, 'https://test.com/image_link');
 
@@ -375,10 +375,9 @@ void main() {
     expect(item.itunes!.block, false);
   });
   test("parse RSS-PodcastIndex-R1.xml", () {
-    var xmlString =
-        new File("test/xml/RSS-PodcastIndex-R1.xml").readAsStringSync();
+    var xmlString = File("test/xml/RSS-PodcastIndex-R1.xml").readAsStringSync();
 
-    var feed = new RssFeed.parse(xmlString);
+    var feed = RssFeed.parse(xmlString);
 
     expect(feed.title, 'Podcasting 2.0 Namespace Example');
     expect(feed.description,

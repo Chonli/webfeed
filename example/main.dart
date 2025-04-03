@@ -6,7 +6,8 @@ void main() {
 
   // RSS feed
   client
-      .get(Uri.parse('https://developer.apple.com/news/releases/rss/releases.rss'))
+      .get(Uri.parse(
+          'https://developer.apple.com/news/releases/rss/releases.rss'))
       .then((response) {
     return response.body;
   }).then((bodyString) {
@@ -16,7 +17,9 @@ void main() {
   });
 
   // Atom feed
-  client.get(Uri.parse('https://www.theverge.com/rss/index.xml')).then((response) {
+  client
+      .get(Uri.parse('https://www.theverge.com/rss/index.xml'))
+      .then((response) {
     return response.body;
   }).then((bodyString) {
     final feed = AtomFeed.parse(bodyString);

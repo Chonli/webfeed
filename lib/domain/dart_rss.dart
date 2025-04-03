@@ -1,10 +1,8 @@
 import 'package:dart_rss/dart_rss.dart';
-import 'package:http/http.dart' as http;
-import 'package:dart_rss/domain/atom_feed.dart';
 import 'package:dart_rss/domain/rss1_feed.dart';
-import 'package:dart_rss/domain/rss_feed.dart';
-import 'package:xml/xml.dart' as xml;
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:xml/xml.dart' as xml;
 
 extension SafeParseDateTime on DateTime {
   static DateTime? safeParse(String? str) {
@@ -29,10 +27,10 @@ extension SafeParseDateTime on DateTime {
 }
 
 enum RssVersion {
-  RSS1,
-  RSS2,
-  Atom,
-  Unknown,
+  rss1,
+  rss2,
+  atom,
+  unknown,
 }
 
 class WebFeed {
@@ -51,20 +49,18 @@ class WebFeed {
   static WebFeed fromXmlString(String xmlString) {
     final rssVersion = detectRssVersion(xmlString);
     switch (rssVersion) {
-      case RssVersion.RSS1:
+      case RssVersion.rss1:
         final rss1Feed = Rss1Feed.parse(xmlString);
         return WebFeed.fromRss1(rss1Feed);
-      case RssVersion.RSS2:
+      case RssVersion.rss2:
         final rss2Feed = RssFeed.parse(xmlString);
         return WebFeed.fromRss2(rss2Feed);
-      case RssVersion.Atom:
+      case RssVersion.atom:
         final atomFeed = AtomFeed.parse(xmlString);
         return WebFeed.fromAtom(atomFeed);
-      case RssVersion.Unknown:
+      case RssVersion.unknown:
         throw Error.safeToString(
             'Invalid XML String? We cannot detect RSS/Atom version.');
-      default:
-        throw Exception('Some error has occured.');
     }
   }
 
@@ -142,16 +138,16 @@ class WebFeed {
         : rssRefs.first.getAttribute('version')?.contains('2');
     xmlns = feedRefs.isEmpty
         ? false
-        : feedRefs.first.getAttribute('xmlns')?.toLowerCase()?.contains('atom');
+        : feedRefs.first.getAttribute('xmlns')?.toLowerCase().contains('atom');
 
     if (rdfRefs.isNotEmpty) {
-      return RssVersion.RSS1;
+      return RssVersion.rss1;
     } else if (rssRefs.isNotEmpty && ver != null && ver) {
-      return RssVersion.RSS2;
+      return RssVersion.rss2;
     } else if (feedRefs.isNotEmpty && xmlns != null && xmlns) {
-      return RssVersion.Atom;
+      return RssVersion.atom;
     }
-    return RssVersion.Unknown;
+    return RssVersion.unknown;
   }
 }
 
